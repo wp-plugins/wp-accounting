@@ -112,13 +112,27 @@ function wpaStatement(){
             <h3>Totals</h3>
         	<dl>
             	<dt>Gross Income:</dt>
-                	<dd><?php echo wpa_moneyFormat($total_sales);?></dd>       
-            	<dt>Sales Tax (<?php echo get_option('wpaccounting_tax');?>%):</dt>
-                	<dd><?php echo wpa_moneyFormat($total_sales * (get_option('wpaccounting_tax')/100));?></dd>
+                	<dd><?php echo wpa_moneyFormat($total_sales);?></dd>
+                <?php
+				$tax_percent = get_option('wpaccounting_tax');
+				$calc_tax = 0;
+				if(is_numeric($tax_percent) && $tax_percent > 0){
+					if(get_option('wpaccounting_tax_included') == 1){
+						$pre_tax = $total_sales / (1 + ($tax_percent/100));
+						$calc_tax = $total_sales - $pre_tax;
+					}else{
+						$calc_tax = $total_sales * ($tax_percent/100);
+					}
+				?>
+            	<dt>Sales Tax (<?php echo $tax_percent;?>%):</dt>
+                	<dd>- <?php echo wpa_moneyFormat($calc_tax);?></dd>
+                <?php
+				}
+				?>
             	<dt>Gross Expenses:</dt>
-                	<dd><?php echo wpa_moneyFormat($total_expense);?></dd>    
+                	<dd>- <?php echo wpa_moneyFormat($total_expense);?></dd>    
             	<dt>Net Income (Profit):</dt>
-                	<dd><?php echo wpa_moneyFormat(($total_sales * ((100-get_option('wpaccounting_tax'))/100)) - $total_expense);?></dd>
+                	<dd><strong><?php echo wpa_moneyFormat($total_sales - $calc_tax - $total_expense);?></strong></dd>
             </dl>
             <br class="clear">
         </div>

@@ -1,8 +1,10 @@
 <?php
 function wpaSettings(){
+	$settings = array('wpaccounting_currency','wpaccounting_tax','wpaccounting_tax_included');
+	
 	if(!empty($_POST['settings'])){
-		foreach($_POST['settings'] as $k => $v){
-			update_option($k,$v);
+		foreach($settings as $s){
+			update_option($s,(isset($_POST['settings'][$s]) ? $_POST['settings'][$s] : '0'));
 		}
 	}
 	?>
@@ -17,6 +19,10 @@ function wpaSettings(){
         	<tr>
             	<th scope="row">Sales Tax: </th>
                 <td><input type="text" name="settings[wpaccounting_tax]" value="<?php echo get_option('wpaccounting_tax');?>">%</td>
+            </tr>
+        	<tr>
+            	<th scope="row">Sales Tax included in sales: </th>
+                <td><input type="checkbox" name="settings[wpaccounting_tax_included]" value="1" <?php echo (get_option('wpaccounting_tax_included') == 1 ? 'CHECKED' : '');?>></td>
             </tr>
         </table>
         <p class="submit"><input type="submit" name="submit" id="submit" class="button button-primary" value="Save Changes"  /></p></form>
