@@ -4,7 +4,7 @@ Donate link: http://www.advancedstyle.com/
 Tags: accounting, ledger, sales, expenses, financial
 Requires at least: 3.0.1
 Tested up to: 3.5.1
-Stable tag: 0.5.1
+Stable tag: 0.6
 License: AGPLv3.0 or later
 License URI: http://opensource.org/licenses/AGPL-3.0
 
