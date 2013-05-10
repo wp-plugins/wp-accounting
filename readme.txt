@@ -36,6 +36,9 @@ No, Wordpress Accounting is a stand-alone system that requires uses to manually 
 
 == Changelog ==
 
+= 0.6.1 =
+* Fixed number_format bug
+
 = 0.6 =
 * Updates:
 - Added "Tax included in Sales" option and tax calculation

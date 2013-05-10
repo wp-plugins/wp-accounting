@@ -3,7 +3,7 @@
 Plugin Name: WP Accounting
 Plugin URI: http://www.advancedstyle.com
 Description: Simple accounting system for recording income and expenses
-Version: 0.6
+Version: 0.6.1
 Author: David Barnes
 Author URI: http://www.advancedstyle.com
 License: AGPLv3.0 or later
