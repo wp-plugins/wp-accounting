@@ -16,7 +16,6 @@ Wordpress Accounting (or "WPA" for short) allows users to input income and expen
 
 This plugin was initally designed for a small restaurant to input their daily receipts and outgoing expenses, but can be used for any kind of business to keep track of your income and expenses.
 
-Wordpress
 == Installation ==
 
 1. Unzip/Extract the plugin zip to your computer
@@ -29,6 +28,10 @@ Wordpress
 = Does Wordpress Accounting integrate with any shopping cart plugins? =
 
 No, Wordpress Accounting is a stand-alone system that requires uses to manually input their sales and expenses.  It does not automatically link into any shopping carts, or get any data by itself.
+
+= How to do I make WP Accounting show up in the front end of my site, such as within certain pages =
+
+You can't; WP Accounting is an admin area only tool.  You can only access WP Accounting system via the Wordpress admin.
 
 == Screenshots ==
 
