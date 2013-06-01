@@ -141,7 +141,7 @@ class directory_ledger_table extends WP_List_Table {
 		$query = "SELECT l.ledger_id, l.ledger_date, l.amount, l.type_id, IF(l.type_id = 1, 'Income: Sales', CONCAT('Expense: ',(SELECT post_title FROM ".$wpdb->prefix."posts WHERE ID=l.type_id))) as type";
 		$query .= " FROM ".$wpdb->prefix . "wpaccounting_ledger l ";
 		$wheres = array();
-		if($_GET['filter_type'] != ''){
+		if(isset($_GET['filter_type']) && $_GET['filter_type'] != ''){
 			switch($_GET['filter_type']){
 				case 'sale':
 					$wheres[] = "l.type_id=1";
@@ -155,10 +155,10 @@ class directory_ledger_table extends WP_List_Table {
 			}
 		}
 		
-		if($_GET['start_date'] != ''){
+		if(isset($_GET['start_date']) && $_GET['start_date'] != ''){
 			$wheres[] = "l.ledger_date >='".date("Y-m-d 00:00:00",strtotime($_GET['start_date']))."'";
 		}
-		if($_GET['end_date'] != ''){
+		if(isset($_GET['end_date']) && $_GET['end_date'] != ''){
 			$wheres[] = "l.ledger_date <='".date("Y-m-d 23:59:59",strtotime($_GET['end_date']))."'";
 		}
 		if(!empty($wheres)){
@@ -228,11 +228,11 @@ class directory_ledger_table extends WP_List_Table {
 		}
 		echo '</select>';
 		echo '<p style="float:left;margin:3px 0px;">Start Date: </p>';
-		echo '<input type="text" name="start_date" class="datepicker" value="'.$_GET['start_date'].'" id="start_end" style="float:left;width:100px;">';
+		echo '<input type="text" name="start_date" class="datepicker" value="'.(isset($_GET['start_date']) ? $_GET['start_date'] : '').'" id="start_end" style="float:left;width:100px;">';
 		echo '<p style="float:left;margin:3px 0px;" style="float:left;">End Date: </p>';
-		echo '<input type="text" name="end_date" class="datepicker" value="'.$_GET['end_date'].'" id="end_date" style="float:left;width:100px;">';
+		echo '<input type="text" name="end_date" class="datepicker" value="'.(isset($_GET['end_date']) ? $_GET['end_date'] : '').'" id="end_date" style="float:left;width:100px;">';
 		echo '<input type="submit" name="" id="post-query-submit" class="button" value="Filter" style="float:left;" />';
-		if($_GET['filter_type'] != '' || $_GET['end_date'] != '' || $_GET['start_date'] != ''){
+		if(isset($_GET['filter_type']) || isset($_GET['end_date']) || isset($_GET['start_date'])){
 			echo '<a href="'.admin_url('admin.php?page='.ACCOUNTING_LEDGER).'" class="button" style="float:left;margin-right:5px;">Reset</a>';
 		}
 		echo '<input type="button" name="" class="button expandall" value="- Hide All" style="float:left;" />';

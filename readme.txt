@@ -4,7 +4,7 @@ Donate link: http://www.advancedstyle.com/
 Tags: accounting, ledger, sales, expenses, financial
 Requires at least: 3.0.1
 Tested up to: 3.5.1
-Stable tag: 0.6.1
+Stable tag: 0.6.2
 License: AGPLv3.0 or later
 License URI: http://opensource.org/licenses/AGPL-3.0
 
@@ -38,6 +38,8 @@ You can't; WP Accounting is an admin area only tool.  You can only access WP Acc
 1. Not available
 
 == Changelog ==
+= 0.6.2 =
+* Fixed minor PHP strict notices
 
 = 0.6.1 =
 * Fixed number_format bug
