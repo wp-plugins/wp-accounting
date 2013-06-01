@@ -35,7 +35,11 @@ You can't; WP Accounting is an admin area only tool.  You can only access WP Acc
 
 == Screenshots ==
 
-1. Not available
+1. screenshot_accountinginput.jpg
+
+2. screenshot_statement.jpg
+
+3. screenshot_ledger.jpg
 
 == Changelog ==
 = 0.6.2 =
