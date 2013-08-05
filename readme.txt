@@ -4,7 +4,7 @@ Donate link: http://www.advancedstyle.com/
 Tags: accounting, ledger, sales, expenses, financial
 Requires at least: 3.0.1
 Tested up to: 3.5.1
-Stable tag: 0.7.0
+Stable tag: 0.7.2
 License: AGPLv3.0 or later
 License URI: http://opensource.org/licenses/AGPL-3.0
 
@@ -42,10 +42,14 @@ You can't; WP Accounting is an admin area only tool.  You can only access WP Acc
 3. screenshot_ledger.jpg
 
 == Changelog ==
-= 0.7.0 =
+= 0.7.2 =
 * Added API (see "Other Notes" section for API functions)
-* Added multi-currency entries (only available via API inserts)
+* Added multi-currency support
 * Changed "Sales" to "Income" to allow for broader usage
+* Added Accounts (bank accounts, loan accounts etc..)
+* Added Balance Sheet
+* Added options to allow different user access levels
+* Added pluggable reports system (see "Other Notes" section)
 
 = 0.6.2 =
 * Fixed minor PHP strict notices
@@ -71,7 +75,7 @@ You can't; WP Accounting is an admin area only tool.  You can only access WP Acc
 = 0.5 =
 * Initial Wordpress Accounting Release
 
-== WP Account API ==
+== WP Accounting API ==
 
 The API allows you to directly interact with the account ledger on a code level without having to use the user interface.
 
@@ -83,3 +87,17 @@ The API allows you to directly interact with the account ledger on a code level 
     			  "currency" => "USD");
     $wpaccounting->insert($data);
 }'
+
+== WP Accounting Pluggable Report ==
+
+WP Accounting has the ability to create report plugins, so that developers can create custom reports that can easily be installed ontop of WP accounting without modifying core code.
+
+Plugins should be created in the same manner as a standard Wordpress plugins.
+
+==Example Useage:==
+
+-Create a folder /wp-content/plugins/wp-accounting-report-example/
+
+-Create a file /wp-content/plugins/wp-accounting-report-example/wp-accounting-report-example.php
+
+-Paste the below code into your PHP file and modify it as needed to create your own custom reports.

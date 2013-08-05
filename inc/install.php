@@ -104,6 +104,7 @@ class wpAccountingInstall
 	   }
 	   
 	   add_option('wpaccounting_currency','$');
+	   add_option('wpaccounting_multicurrency',1);
 	   
 	   wpAccountingInstall::setVersion();
 	}

@@ -18,6 +18,13 @@ function wpaStatement(){
 	$start .= ' 00:00:00';
 	$end .= ' 23:59:59';
 	?>
+    <script type="text/javascript">
+	jQuery(function($){
+		$(document).ready(function(){
+			$('.expenses').css('min-height',$('.income').height());
+		});
+	});
+	</script>
     <div class='wrap'>
         <div id="icon-edit-pages" class="icon32"><br /></div><h2>Income Statement</h2>
         <form action="<?php echo $_SERVER['PHP_SELF'];?>" method="get">
@@ -117,14 +124,50 @@ function wpaStatement(){
 			if($expenses = get_posts(array('post_type' => 'wpa_expense_type','posts_per_page' => -1,'orderby' => 'title','order' => 'ASC','post_status' => 'publish','post_parent' => 0))){
 				echo '<dl>';
 				foreach($expenses as $k => $e){
-					$sum = $wpdb->get_var("SELECT SUM(amount) FROM ".$wpdb->prefix . "wpaccounting_ledger WHERE type_id='".$e->ID."' AND ledger_date BETWEEN '".$start."' AND '".$end."'");
-					$total_expense += $sum;
-					echo '<dt>'.$e->post_title.'</dt><dd>'.wpa_moneyFormat($sum).'</dd>';
+					$x = 0;
+					foreach($currencies as $currency){
+						$et = 0;
+						if($sum = $wpdb->get_results("SELECT ledger_id, amount, currency_rate FROM ".$wpdb->prefix . "wpaccounting_ledger WHERE type_id='".$e->ID."' AND ledger_date BETWEEN '".$start."' AND '".$end."' AND currency='".esc_sql($currency['currency'])."'")){
+							foreach($sum as $s){
+								if($s->currency_rate == 0){
+									if($currency['currency'] == $default_currency){
+										$s->currency_rate = 1;
+									}else{
+										$s->currency_rate = wpaGetCurrencyRate($currency['currency'],$s->ledger_date, $default_currency);
+									}
+									$wpdb->query("UPDATE ".$wpdb->prefix . "wpaccounting_ledger SET currency_rate='".esc_sql($s->currency_rate)."' WHERE ledger_id='".$s->ledger_id."'");
+								}
+								$et += $s->amount;
+								$total_expense += ($s->amount / $s->currency_rate);
+							}
+							echo '<dt>'.($x == 0 ? $e->post_title : '&nbsp;').'</dt>';
+							$x++;
+							echo '<dd>'.wpa_moneyFormat($et, $currency['currency']).'</dd>';
+						}
+					}
 					if($subexpenses = get_posts(array('post_type' => 'wpa_expense_type','posts_per_page' => -1,'orderby' => 'title','order' => 'ASC','post_status' => 'publish','post_parent' => $e->ID))){
 						foreach($subexpenses as $se){
-							$sum = $wpdb->get_var("SELECT SUM(amount) FROM ".$wpdb->prefix . "wpaccounting_ledger WHERE type_id='".$se->ID."' AND ledger_date BETWEEN '".$start."' AND '".$end."'");
-							$total_expense += $sum;
-							echo '<dt class="sub">'.$se->post_title.'</dt><dd class="sub">'.wpa_moneyFormat($sum).'</dd>';
+							$x = 0;
+							foreach($currencies as $currency){
+								$et = 0;
+								if($sum = $wpdb->get_results("SELECT ledger_id, amount, currency_rate FROM ".$wpdb->prefix . "wpaccounting_ledger WHERE type_id='".$se->ID."' AND ledger_date BETWEEN '".$start."' AND '".$end."' AND currency='".esc_sql($currency['currency'])."'")){
+									foreach($sum as $s){
+										if($s->currency_rate == 0){
+											if($currency['currency'] == $default_currency){
+												$s->currency_rate = 1;
+											}else{
+												$s->currency_rate = wpaGetCurrencyRate($currency['currency'],$s->ledger_date, $default_currency);
+											}
+											$wpdb->query("UPDATE ".$wpdb->prefix . "wpaccounting_ledger SET currency_rate='".esc_sql($s->currency_rate)."' WHERE ledger_id='".$s->ledger_id."'");
+										}
+										$et += $s->amount;
+										$total_expense += ($s->amount / $s->currency_rate);
+									}
+									echo '<dt class="sub">'.($x == 0 ? $se->post_title : '&nbsp;').'</dt>';
+									$x++;
+									echo '<dd>'.wpa_moneyFormat($et, $currency['currency']).'</dd>';
+								}
+							}
 						}
 					}
 				}
@@ -137,7 +180,7 @@ function wpaStatement(){
             <h3>Totals</h3>
         	<dl>
             	<dt>Gross Income:</dt>
-                	<dd><?php echo wpa_moneyFormat($total_sales);?></dd>
+                	<dd><?php echo wpa_moneyFormat($total_sales, $default_currency);?></dd>
                 <?php
 				$tax_percent = get_option('wpaccounting_tax');
 				$calc_tax = 0;
@@ -150,14 +193,14 @@ function wpaStatement(){
 					}
 				?>
             	<dt>Sales Tax (<?php echo $tax_percent;?>%):</dt>
-                	<dd>- <?php echo wpa_moneyFormat($calc_tax);?></dd>
+                	<dd>- <?php echo wpa_moneyFormat($calc_tax, $default_currency);?></dd>
                 <?php
 				}
 				?>
             	<dt>Gross Expenses:</dt>
-                	<dd>- <?php echo wpa_moneyFormat($total_expense);?></dd>    
+                	<dd>- <?php echo wpa_moneyFormat($total_expense, $default_currency);?></dd>    
             	<dt>Net Income (Profit):</dt>
-                	<dd><strong><?php echo wpa_moneyFormat($total_sales - $calc_tax - $total_expense);?></strong></dd>
+                	<dd><strong><?php echo wpa_moneyFormat($total_sales - $calc_tax - $total_expense, $default_currency);?></strong></dd>
             </dl>
             <br class="clear">
         </div>

@@ -3,9 +3,7 @@ function wpaEntry(){
 	global $wpdb;
 	
 	$currencies = array();
-	if(get_option('wpaccounting_multicurrency') == 1){
-		$currencies = get_posts(array('post_type' => 'wpa_currency','posts_per_page' => -1,'orderby' => 'ID','order' => 'ASC','post_status' => 'publish'));
-	}
+	$currencies = get_posts(array('post_type' => 'wpa_currency','posts_per_page' => -1,'orderby' => 'ID','order' => 'ASC','post_status' => 'publish'));
 	
 	$total_sales = 0;
 	if(!empty($_POST)){

@@ -1,7 +1,7 @@
 jQuery(function( $ ){
 	$(document).ready(function(){
 		if($('#wpasaledate').length){
-			$('#wpasaledate').closest('tr').before('<tr id="totalsales"><td>Total Sales: </td><td>$0</td></tr>');
+			$('#wpasaledate').closest('tr').before('<tr id="totalsales"><td>Total Income: </td><td>$0</td></tr>');
 			$('input[name^="sales"]').keyup(function(){
 				calcSales();
 			});
@@ -44,13 +44,15 @@ jQuery(function( $ ){
 	function calcSales(){
 			var sales = 0;
 			$('input[name^="sales"]').each(function(){
-				var val = $(this).val();
-				if($.isNumeric(val)){
-					val = parseFloat(val);
-					if($(this).hasClass('less')){
-						sales -= val;
-					}else{
-						sales += val;
+				if($(this).attr('name') != 'sales_notes'){
+					var val = $(this).val();
+					if($.isNumeric(val)){
+						val = parseFloat(val);
+						if($(this).hasClass('less')){
+							sales -= val;
+						}else{
+							sales += val;
+						}
 					}
 				}
 			});
